@@ -1,10 +1,9 @@
 package com.example.viewmodelcounter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -37,15 +36,15 @@ class Counter1(initValue: Int = 0) {
     var number: MutableLiveData<Int> = MutableLiveData()
         private set
     init {
-        Log.d("ZZZ", "counter init");
+        Log.d("ZZZ", "counter init")
         number.value = initValue
     }
     fun inc() {
-        Log.d("ZZZ", "counter inc()");
+        Log.d("ZZZ", "counter inc()")
         number.value = number.value?.plus(1)
     }
     fun dec() {
-        Log.d("ZZZ", "counter dec()");
+        Log.d("ZZZ", "counter dec()")
         number.value = number.value?.minus(1)
     }
 }
