@@ -4,47 +4,69 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.viewmodelcounter.databinding.ActivityMainDatabindingBinding
+import androidx.lifecycle.*
+import com.example.viewmodelcounter.databinding.ActivityMainDatabinding1Binding
+import kotlin.random.Random
 
 class MainLiveDataActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainDatabindingBinding
-    lateinit var viewModel: CounterViewModel1
+    private lateinit var binding: ActivityMainDatabinding1Binding
+    private lateinit var viewModel: CounterViewModel1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView<ActivityMainDatabindingBinding>(this,
-                R.layout.activity_main_databinding)
+        binding = DataBindingUtil.setContentView(this,
+                R.layout.activity_main_databinding1)
         viewModel = ViewModelProvider(this).get(CounterViewModel1::class.java)
         binding.viewModel = viewModel
 
-        viewModel.counter.number.observe(this, {
-            Log.d("ZZZ", "viewModel.counter.number observed")
-            binding.valueView.text = it.toString()
+        binding.plusButton.setOnClickListener {
+            Log.d("ZZZ", "plus onclick")
+            viewModel.counter.inc()
+        }
+        binding.minusButton.setOnClickListener {
+            Log.d("ZZZ", "minus onclick")
+            viewModel.counter.dec()
+        }
+
+        viewModel.positiveSum.observe(this, {
+            Log.d("ZZZ", "viewModel.positiveSum observed")
+            binding.posSum.text = it.toString()
+        })
+        viewModel.negativeSum.observe(this, {
+            Log.d("ZZZ", "viewModel.negativeSum observed")
+            binding.negSum.text = it.toString()
         })
     }
 }
 
 class CounterViewModel1: ViewModel() {
     val counter = Counter1()
+    val positiveSum: LiveData<Int> = Transformations.distinctUntilChanged(
+            Transformations.map(counter.ops) { it.filter { it > 0 }.sum() }
+    )
+    val negativeSum: LiveData<Int> = Transformations.distinctUntilChanged(
+            Transformations.map(counter.ops) { it.filter { it < 0 }.sum() }
+    )
 }
 
 class Counter1(initValue: Int = 0) {
-    var number: MutableLiveData<Int> = MutableLiveData()
-        private set
+    // mutable live data that contains immutable list
+    val ops: MutableLiveData<List<Int>> = MutableLiveData(listOf())
     init {
         Log.d("ZZZ", "counter init")
-        number.value = initValue
     }
-    fun inc() {
+    fun inc(amount: Int = 1) {
         Log.d("ZZZ", "counter inc()")
-        number.value = number.value?.plus(1)
+        addOp(if(Random.nextBoolean()) amount else 0)
     }
-    fun dec() {
+    fun dec(amount: Int = 1) {
         Log.d("ZZZ", "counter dec()")
-        number.value = number.value?.minus(1)
+        addOp(if(Random.nextBoolean()) -amount else 0)
+    }
+    private fun addOp(amount: Int) {
+        // new list is assigned to live data object
+        ops.value = ops.value?.plus(listOf(amount))
+        Log.d("ZZZ", "addOp() ops: ${ops.value}")
     }
 }

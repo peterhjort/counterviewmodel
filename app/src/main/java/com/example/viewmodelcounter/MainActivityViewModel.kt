@@ -16,7 +16,7 @@ class MainActivityViewModel : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
 
         binding =
-            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.plusButton.setOnClickListener {
             viewModel.counter.inc()
             updateUI()
