@@ -8,7 +8,7 @@ import androidx.lifecycle.*
 import com.example.viewmodelcounter.databinding.ActivityMainDatabinding1Binding
 import kotlin.random.Random
 
-class MainLiveDataActivity : AppCompatActivity() {
+class MainActivityVMLDTransformation : AppCompatActivity() {
     private lateinit var binding: ActivityMainDatabinding1Binding
     private lateinit var viewModel: CounterViewModel1
 
@@ -43,10 +43,10 @@ class MainLiveDataActivity : AppCompatActivity() {
 class CounterViewModel1: ViewModel() {
     val counter = Counter1()
     val positiveSum: LiveData<Int> = Transformations.distinctUntilChanged(
-            Transformations.map(counter.ops) { it.filter { it > 0 }.sum() }
+            Transformations.map(counter.ops) { p -> p.filter { it > 0 }.sum() }
     )
     val negativeSum: LiveData<Int> = Transformations.distinctUntilChanged(
-            Transformations.map(counter.ops) { it.filter { it < 0 }.sum() }
+            Transformations.map(counter.ops) { p -> p.filter { it < 0 }.sum() }
     )
 }
 
@@ -58,11 +58,13 @@ class Counter1(initValue: Int = 0) {
     }
     fun inc(amount: Int = 1) {
         Log.d("ZZZ", "counter inc()")
-        addOp(if(Random.nextBoolean()) amount else 0)
+        //addOp(if(Random.nextBoolean()) amount else 0)
+        addOp(amount)
     }
     fun dec(amount: Int = 1) {
         Log.d("ZZZ", "counter dec()")
-        addOp(if(Random.nextBoolean()) -amount else 0)
+        //addOp(if(Random.nextBoolean()) -amount else 0)
+        addOp(-amount)
     }
     private fun addOp(amount: Int) {
         // new list is assigned to live data object

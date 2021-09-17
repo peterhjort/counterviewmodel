@@ -10,25 +10,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.viewmodelcounter.databinding.ActivityMainBinding
 
-class MainActivityViewModel : AppCompatActivity() {
+class MainActivityViewModelLiveData : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    lateinit var viewModel: CounterViewModel
+    lateinit var viewModel: LiveCounterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(LiveCounterViewModel::class.java)
 
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.plusButton.setOnClickListener {
             viewModel.counter.inc()
-            updateUI()
         }
         binding.minusButton.setOnClickListener {
             viewModel.counter.dec()
-            updateUI()
         }
-        updateUI()
+        viewModel.counter.value.observe(this, Observer {
+            Log.i("COUNTER", "observe")
+            binding.valueView.text = viewModel.counter.value?.value.toString()
+        })
     }
 
     private fun updateUI() {
@@ -36,7 +37,16 @@ class MainActivityViewModel : AppCompatActivity() {
     }
 }
 
-class CounterViewModel: ViewModel() {
-    val counter = Counter()
+class LiveCounterViewModel: ViewModel() {
+    val counter = LiveCounter()
 }
 
+class LiveCounter(initValue: Int = 0) {
+    var value: MutableLiveData<Int> = MutableLiveData()
+        private set
+    init {
+        value.value = initValue
+    }
+    fun inc() { value.value = value.value?.plus(1) ?: 0}
+    fun dec() { value.value = value.value?.plus(-1) ?: 0 }
+}
