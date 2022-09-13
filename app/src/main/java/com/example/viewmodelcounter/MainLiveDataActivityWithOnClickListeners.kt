@@ -22,23 +22,23 @@ class MainLiveDataActivityWithOnClickListeners : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(CounterViewModel2::class.java)
 
         viewModel.counter.number.observe(this, {
-            Log.d("ZZZ", "viewModel.counter.number observed")
+            Log.d("YYY", "viewModel.counter.number observed")
             binding.valueView.text = it.toString()
         })
 
         viewModel.counter.number.observe(this, {
-            Log.d("ZZZ", "Kukkuu!")
+            Log.d("YYY", "Kukkuu!")
         })
 
         binding.plusButton.setOnClickListener {
             viewModel.counter.inc()
             viewModel.clicks++
-            Log.d("ZZZ", "Kukkuu ${viewModel.clicks}")
+            Log.d("YYY", "Kukkuu ${viewModel.clicks}")
         }
         binding.minusButton.setOnClickListener {
             viewModel.counter.dec()
             viewModel.clicks++
-            Log.d("ZZZ", "Kukkuu ${viewModel.clicks}")
+            Log.d("YYY", "Kukkuu ${viewModel.clicks}")
         }
     }
 }
@@ -53,19 +53,19 @@ class Counter2(initValue: Int = 0) {
         private set
 
     init {
-        Log.d("ZZZ", "counter init")
+        Log.d("YYY", "counter init")
         number.value = initValue
     }
 
     fun inc() {
-        Log.d("ZZZ", "counter inc()")
+        Log.d("YYY", "counter inc()")
         number.value = number.value?.plus(1)
-        Log.d("ZZZ", "taas")
+        Log.d("YYY", "taas")
         number.value = number.value?.plus(1)
     }
 
     fun dec() {
-        Log.d("ZZZ", "counter dec()")
+        Log.d("YYY", "counter dec()")
         number.value = number.value?.minus(1)
     }
 }

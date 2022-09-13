@@ -24,7 +24,7 @@ class MainLiveDataActivity : AppCompatActivity() {
         // When the value of counter's number property changes
         // value of the text field is updated to be the new value of number
         viewModel.counter.number.observe(this, {
-            Log.d("ZZZ", "viewModel.counter.number observed")
+            Log.d("YYY", "viewModel.counter.number observed")
             binding.valueView.text = it.toString()
         })
     }
@@ -38,15 +38,15 @@ class Counter1(initValue: Int = 0) {
     var number: MutableLiveData<Int> = MutableLiveData()
         private set
     init {
-        Log.d("ZZZ", "counter init")
+        Log.d("YYY", "counter init")
         number.value = initValue
     }
     fun inc() {
-        Log.d("ZZZ", "counter inc()")
+        Log.d("YYY", "counter inc()")
         number.value = number.value?.plus(1)
     }
     fun dec() {
-        Log.d("ZZZ", "counter dec()")
+        Log.d("YYY", "counter dec()")
         number.value = number.value?.minus(1)
     }
 }
