@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ViewModelCounter">
-        <activity android:name=".MainActivityViewModel" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivityViewModel" />
         <activity android:name=".MainLiveDataActivity" />
         <activity android:name=".MainLiveDataActivityWithOnClickListeners">
             <intent-filter>

@@ -26,17 +26,26 @@ class MainLiveDataActivityWithOnClickListeners : AppCompatActivity() {
             binding.valueView.text = it.toString()
         })
 
+        viewModel.counter.number.observe(this, {
+            Log.d("ZZZ", "Kukkuu!")
+        })
+
         binding.plusButton.setOnClickListener {
             viewModel.counter.inc()
+            viewModel.clicks++
+            Log.d("ZZZ", "Kukkuu ${viewModel.clicks}")
         }
         binding.minusButton.setOnClickListener {
             viewModel.counter.dec()
+            viewModel.clicks++
+            Log.d("ZZZ", "Kukkuu ${viewModel.clicks}")
         }
     }
 }
 
 class CounterViewModel2: ViewModel() {
     val counter = Counter2()
+    var clicks = 0
 }
 
 class Counter2(initValue: Int = 0) {
@@ -50,6 +59,8 @@ class Counter2(initValue: Int = 0) {
 
     fun inc() {
         Log.d("ZZZ", "counter inc()")
+        number.value = number.value?.plus(1)
+        Log.d("ZZZ", "taas")
         number.value = number.value?.plus(1)
     }
 

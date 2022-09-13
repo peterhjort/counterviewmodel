@@ -13,6 +13,7 @@ class MainActivityViewModel : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
 
         binding =
